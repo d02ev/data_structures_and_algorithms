@@ -141,6 +141,7 @@ class LinkedList {
   }
 
   // printing
+  // iterative
   void printIterative() {
     if (HEAD == nullptr) {
       std::cout << "List is empty" << std::endl;
@@ -156,6 +157,7 @@ class LinkedList {
     std::cout << std::endl;
   }
 
+  // recursive
   void printRecursive(Node*& head) {
     if (head == nullptr) {
       std::cout << std::endl;
@@ -164,6 +166,14 @@ class LinkedList {
 
     std::cout << head -> data << " ";
     printRecursive(head -> next);
+  }
+
+  // reverse
+  void printReverse(Node*& head) {
+    if (head == nullptr) return;
+
+    printReverse(head -> next);
+    std::cout << head -> data << " ";
   }
 
   // size
@@ -179,6 +189,36 @@ class LinkedList {
   // last element
   int back() {
     return TAIL -> data;
+  }
+
+  // reverse the list
+  // iterative
+  Node* reverseListIterative() {
+    if (HEAD == nullptr || HEAD -> next == nullptr) return HEAD;
+
+    Node *curr = HEAD, *prev = nullptr, *front = nullptr;
+    TAIL = HEAD;
+    while (curr != nullptr) {
+      front = curr -> next;
+      curr -> next = prev;
+      prev = curr;
+      curr = front;
+    }
+
+    HEAD = prev;
+    return HEAD;
+  }
+
+  // recursive
+  Node* reverseListRecursive(Node*& head) {
+    if (HEAD == nullptr || HEAD -> next == nullptr) return HEAD;
+
+    Node* new_head = reverseListRecursive(head -> next);
+    Node* front = head -> next;
+    front -> next = head;
+    head -> next = nullptr;
+
+    return new_head;
   }
 };
 
@@ -211,9 +251,20 @@ int main(int argc, char* argv[]) {
   head = ll -> deleteFrom(3);
   std::cout << ll -> size() << std::endl;
 
-  ll -> printIterative();
+  std::cout << ll -> front() << " " << ll -> back() << std::endl;
+
+
+  // ll -> printIterative();
+  ll -> printRecursive(head);
+
+  head = ll -> reverseListIterative();
+
+  std::cout << ll -> front() << " " << ll -> back() << std::endl;
 
   ll -> printRecursive(head);
+
+  // ll -> printReverse(head);
+  // std::cout << std::endl;
 
   return 0;
 }
